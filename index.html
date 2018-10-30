@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Générateur de personnages aléatoires</title>
+
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+
+      dt {
+        font-size: .8em;
+        color: #666666;
+      }
+
+      dd {
+        margin-bottom: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="characteristics">
+
+    </div>
+    <button onclick="update()">Encore !</button>
+    <script>
+      var characteristics = [
+        { title: "Corpulence",
+          values: {"Maigre": 2, "Moyen": 3, "Surpoids": 2, "Obèse": 1}
+        },
+        { title: "Taille",
+          values: {"Petit": 1, "Moyen": 1, "Grand": 1}
+        },
+        { title: "Seins/Mamelles",
+          values: {"Sans": 1, "Petits": 1, "Gros": 1}
+        },
+        { title: "Race",
+          values: {"Mouton": 2, "Humain": 1}
+        },
+        { title: "Hanches",
+          values: {"Larges": 1, "Moyennes": 1}
+        },
+        { title: "Haut-1",
+          values: {"Bomber": 1, "Veste": 1, "Manteau" : 1, "Parka" : 1, "Doudoune" : 1, "Blouson" : 1}
+        },
+        { title: "Catégorie GEMO Haut-1",
+          values: {"Hommes": 1, "Femmes": 1}
+        },
+        { title: "Haut-2",
+          values: {"Poncho": 1, "Pull": 1, "Sweat": 1, "Gilet": 1, "Robe longue": 1, "Robe courte": 1, "Costume": 1}
+        },
+        { title: "Catégorie GEMO Haut-2",
+          values: {"Hommes": 1, "Femmes": 1}
+        },
+        { title: "Haut-3",
+          values: {"T-shirt manches courtes": 1, "T-shirt manches longues": 1, "Débardeur": 1, "Tunique": 1, "Chemisier/Chemise": 1, "Polo": 1}
+        },
+        { title: "Catégorie GEMO Haut-3",
+          values: {"Hommes": 1, "Femmes": 1}
+        },
+        { title: "Bas",
+          values: {"Jupe": 1, "Jeans": 1, "Pantalon": 1, "Leggings": 1, "Short": 1, "Pantacourt": 1, "Combinaison": 1}
+        },
+        { title: "Catégorie GEMO Bas",
+          values: {"Hommes": 1, "Femmes": 1}
+        }
+      ];
+
+      let characteristicsElement = document.querySelector('.characteristics');
+
+      let add = (a, b) => a+b;
+
+      let update = () => {
+        let html = '<dl>';
+        
+        characteristics.forEach(characteristic => {
+          html += '<dt>'+characteristic.title+'</dt>';
+
+          let total = Object.values(characteristic.values).reduce(add);
+          let randomNumber = Math.ceil(Math.random() * total);
+
+          let sum = 0;
+          let value;
+
+          Object.entries(characteristic.values).every(([characteristicValue, weight]) => {
+            sum += weight;
+            console.log({characteristicValue, sum, randomNumber, total});
+            if(sum >= randomNumber) {
+              value = characteristicValue;
+              return false;
+            }
+
+            return true;
+          })
+
+          html += '<dd>'+value+'</dd>';
+        })
+
+        html += '</dl>';
+        characteristicsElement.innerHTML = html;
+      }
+
+      update();
+
+    </script>
+  </body>
+</html>
